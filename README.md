@@ -9,14 +9,13 @@ Follow these steps to get BusyBee up and running:
 
 ## Developing using Sublime
 1. Download Sublime Text
-... [Sublime Text](https://www.sublimetext.com/)
+	[Sublime Text](https://www.sublimetext.com/)
 2. Install Appropriate Packages in Sublime
-..1. Open Package Control 
-...>ctrl+shift+p (Win, Linux) or cmd+shift+p (OS X)
-..2. Select Package Control: Install Package --> Install Jedi (this is for python autocompletion)
-..3. Select Package Control: Install Package --> Install SublimeLinter
-..4. Select Package Control: Install Package --> Install SublimeLinter-pylint
- (this is for static analysis)
+	1. Open Package Control 
+		> ctrl+shift+p (Win, Linux) or cmd+shift+p (OS X)
+	2. Select Package Control: Install Package --> Install Jedi (this is for python autocompletion)
+	3. Select Package Control: Install Package --> Install SublimeLinter
+	4. Select Package Control: Install Package --> Install SublimeLinter-pylint(this is for static analysis)
 3. Follow the intructions at [https://github.com/SublimeLinter/SublimeLinter-pylint](https://github.com/SublimeLinter/SublimeLinter-pylint) to set up pylint
 
 
