@@ -13,7 +13,7 @@ Follow these steps to get BusyBee up and running:
 	[Sublime Text](https://www.sublimetext.com/)
 2. Install Appropriate Packages in Sublime
 	1. Open Package Control --> ctrl+shift+p (Windows, Linux) or cmd+shift+p (OS X)
-    2. Select Package Control: Install Package --> Install [Jedi](http://jedi.jedidjah.ch/en/latest/)
+        2. Select Package Control: Install Package --> Install [Jedi](http://jedi.jedidjah.ch/en/latest/)
 	3. Select Package Control: Install Package --> Install [SublimeLinter](http://www.sublimelinter.com/en/latest/)
 	4. Select Package Control: Install Package --> Install [SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8)
 3. Follow the intructions at [https://github.com/SublimeLinter/SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8) to set up flake-8
