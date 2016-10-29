@@ -4,13 +4,15 @@
 Follow these steps to get BusyBee up and running:
 1. Ensure that you have Python 2.7
 2. Install your Virtual Envitonment 
-~~~$ pip install virtualenv~~~
+```$ pip install virtualenv ```
 3. Create virtual enviornment
-~~~$ virtualenv . ~~~
+```$ virtualenv . ```
 4. Enter virtual environment 
-~~~$source bin/activate
+```$source bin/activate ```
 5. Install all dependencies
-~~~(BusyBee)$ pip install -r requirements.txt~~~
+```(BusyBee)$ pip install -r requirements.txt ```
+6. To exit virtualenv
+```$ deactivate ```
 
 
 ## Developing using Sublime
