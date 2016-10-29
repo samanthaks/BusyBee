@@ -6,6 +6,7 @@ Follow these steps to get BusyBee up and running:
 2. Install [MongoDB](https://www.mongodb.com/) ([Ubuntu Linux](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-ubuntu/), [OSX](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-with-homebrew))
 3. Set up your virtual environment and download [Flask](http://flask.pocoo.org/). See tutorial [here](http://flask.pocoo.org/docs/0.11/installation/)
 4. Install [Flask-MongoEngine](http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/)
+5. Install [Flask-Bootstrap](https://pythonhosted.org/Flask-Bootstrap/)
 
 
 ## Developing using Sublime
