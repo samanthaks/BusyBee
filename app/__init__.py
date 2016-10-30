@@ -1,7 +1,7 @@
 """ run using "python app.py" """
 from flask import Flask
 from flask_mongoengine import MongoEngine
-
+from mongoengine import connect 
 
 app = Flask(__name__)
 app.config["DEBUG"] = True
@@ -10,9 +10,10 @@ app.config['SECRET_KEY'] = 'X{WC3JsG6m7m4o8W3DwrrgJ0[Np,!O'
 
 db = MongoEngine(app)
 
-
 from app.routes.home import home
 from app.routes.tasks import tasks
+"""from app.routes.new import new"""
 
 app.register_blueprint(home)
 app.register_blueprint(tasks)
+"""app.register_blueprint(new)"""
