@@ -8,11 +8,13 @@
 <h2>Check out my tasks!</h2>
 
 <ul class="tasks">
-  {% for task in tasks %}
-  <li class="tasks">
-    <h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
-    <p>{{ task.details }}</p>
-  </li>
-  {% endfor %}
+	{% for task in tasks %}
+	<li class="tasks">
+		
+		<h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
+		<p>{{ task.details }}</p> <a href="{{ url_for('tasks.view', id=task.id) }}">View Post</a>
+	</li>
+	{% endfor %}
 </ul>
+
 {% endblock %}
