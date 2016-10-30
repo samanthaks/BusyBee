@@ -16,13 +16,13 @@
       <h2>{% block current_page %}Home{% endblock %}</h2>
       <ul class="menu">
         <li>
-          <a href="{{ url_for('name.home_page') }}">Home</a>
+          <a href="{{ url_for('home.home_page') }}">Home</a>
         </li>
         <li>
           <a href="{{ url_for('tasks.tasks_page') }}">Tasks</a>
         </li>
 		    <li>
-          <a href="{{ url_for('tasks.new') }}">Submit New Request</a>
+          <a href="{{ url_for('tasks.new_task') }}">Submit New Request</a>
         </li>
       </ul>
     </div>

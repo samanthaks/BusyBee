@@ -21,4 +21,4 @@ def new_task():
         form.save()
         return redirect(url_for('tasks.tasks_page'))
 
-    return render_template('new.html', form=form)
+    return render_template('new_task.html', form=form)

@@ -1,12 +1,23 @@
 from app import db
-from flask_mongoengine.wtf import model_form
+from werkzeug.security import check_password_hash
 
 
 class User(db.Document):
-    username = db.StringField(required=True, max_length=15)
-    password = db.StringField(required=True, max_length=20)
-    email = db.StringField(required=True)
-    requests_made = db.ListField(required=True)
+    def __init__(self, username):
+        self.username = username
 
+    def is_authenticated(self):
+        return True
 
-UserForm = model_form(User)
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return self.username
+
+    @staticmethod
+    def validate_login(password_hash, password):
+        return check_password_hash(password_hash, password)
