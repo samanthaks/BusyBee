@@ -1,0 +1,19 @@
+
+
+{% extends "index.html" %}
+{% block title %}Tasks | {{ super() }} | tasks.title {% endblock %}
+{% block current_page %}Task{% endblock %}
+
+{% block content %}
+    <h1>{{ tasks.title }}</h1>
+    <h2 class="task-author"> {{ tasks.author }}</h2>
+    <p> Details: {{ tasks.details }}</p>
+    <p> Weight:{{tasks.weight}} </p>
+    <p> Pick-up Location: {{tasks.pick_up}} </p>
+    <p> Drop-off Location: {{tasks.drop_off}} </p>
+
+    <button type="button" class="btn btn-primary">Accept Task</button>
+
+    <button type="button" class="btn btn-secondary"><a class="post-button" href="{{ url_for('tasks.tasks_page') }}">Back to Tasks</a></button>
+    
+{% endblock %}
