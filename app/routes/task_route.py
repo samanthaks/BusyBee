@@ -24,9 +24,21 @@ def new_task():
     return render_template('new_task.html', form=form)
 
 
-@tasks.route('/view/<id>')
-def view(id):
-    """View  tasks)"""
-    task = Request.objects.get_or_404(id=id)
-    return render_template('task_post.html', tasks=task)
+@tasks.route('/view', methods=['GET','POST'])
+def view():
+	"""View  tasks)"""
+	id = request.args.get('id')
+	task = Request.objects.get_or_404(id=id)
+
+	status = request.args.get('status')
+	if status != None:
+		status = int(status)
+		if status == 0:
+			Request.objects(id=id).update(status=1)
+			Request.objects(id=id).update(runner=1)
+
+		if status == 1:
+			Request.objects(id=id).update(status=2)
+
+	return render_template('task_post.html', tasks=task)
 

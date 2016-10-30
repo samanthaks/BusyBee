@@ -11,9 +11,23 @@
     <p> Weight:{{tasks.weight}} </p>
     <p> Pick-up Location: {{tasks.pick_up}} </p>
     <p> Drop-off Location: {{tasks.drop_off}} </p>
+    <p> Status: {{tasks.status}} </p>
 
-    <button type="button" class="btn btn-primary">Accept Task</button>
+    <button type="button" id="change-status" class="btn btn-primary" onclick="changeStatus()">Accept Task</button>
+    <script type="text/javascript">
+    	document.getElementById("change-status").onclick = function changeStatus() {
+    		var status = "{{ tasks.status }}";
+    		var runner = "{{ tasks.runner }}";
+    		status = 1; 
+    		runner = 1; 
+    	}
+    	
+  	</script>
 
     <button type="button" class="btn btn-secondary"><a class="post-button" href="{{ url_for('tasks.tasks_page') }}">Back to Tasks</a></button>
     
+
+
+      <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
 {% endblock %}
