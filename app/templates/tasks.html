@@ -1,45 +1,18 @@
-<html>
-<head>
-  <title>{% block title %}BusyBee{% endblock %}</title>
-  <link rel='stylesheet' 
-      type='text/css'
-      href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,700,300,400'>
-  <link rel="stylesheet" 
-      type="text/css" 
-      href="{{ url_for('static', filename='css/style.css') }}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-</head>
-<body>
-  <nav>
-    <div class="content">
-      <h1><a href="/">BusyBee</a></h1>
-      <h2>{% block current_page %}Tasks{% endblock %}</h2>
-      <ul class="menu">
-        <li>
-          <a href="{{ url_for('name.home_page') }}">Home</a>
-        </li>
-        <li>
-          <a href="{{ url_for('tasks.tasks_page') }}">Tasks</a>
-        </li>
-      </ul>
-    </div>
-  </nav>
 
-  <div class="content">
-    {% block content %}
-      <h2>Check out my posts!</h2>
 
-      <ul class="posts">
-      {% for post in posts %}
-        <li class="post">
-          <h3>{{ post.title }} <small>by {{ post.author }}</small></h3>
-          <p>{{ post.details }}</p>
-        </li>
-      {% endfor %}
-      </ul>
-      {% endblock %}
-  </div>
+{% extends "index.html" %}
+{% block title %}Request | {{ super() }}{% endblock %}
+{% block current_page %}Request{% endblock %}
 
-  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-</body>
-</html>
+{% block content %}
+<h2>Check out my tasks!</h2>
+
+<ul class="tasks">
+  {% for task in tasks %}
+  <li class="tasks">
+    <h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
+    <p>{{ task.details }}</p>
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

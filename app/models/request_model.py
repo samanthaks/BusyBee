@@ -1,5 +1,5 @@
 from app import db
-from flask.ext.mongoengine.wtf import model_form 
+
 
 class Request(db.Document):
     title = db.StringField(required=True, max_length=200)
@@ -10,6 +10,3 @@ class Request(db.Document):
     drop_off = db.StringField(required=True)
     weight = db.DecimalField()
     status = db.IntField()
-
-
-RequestForm= model_form(Request)
