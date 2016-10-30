@@ -1,0 +1,36 @@
+
+
+
+{% extends "index.html" %}
+{% block title %}Request | {{ super() }}{% endblock %}
+{% block current_page %}Request{% endblock %}
+
+{% block content %}
+<h2>Post A New Request</h2>
+
+
+<form action="" method="POST">
+  {{ form.csrf_token }}
+  <div>
+    {{ form.title.label}}
+    {{ form.title }}
+  </div>
+  <div>
+    {{ form.author.label }}
+    {{ form.author }}
+  </div>
+  <div>
+    {{ form.details.label }}
+    {{ form.details }}
+  </div>
+  
+   <div>
+    {{ form.weight.label }}
+    {{ form.weight }}
+  </div>
+  <input type="submit" value="Create">
+</form>
+
+
+{% endblock %}
+
