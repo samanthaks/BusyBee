@@ -1,18 +1,28 @@
 # BusyBee
 
 ## First-Time Setup
-Follow these steps to get BusyBee up and running:
-1. Ensure that you have Python 2.7
-2. Install your Virtual Envitonment 
-```$ pip install virtualenv ```
-3. Create virtual enviornment
-```$ virtualenv . ```
-4. Enter virtual environment 
-```$source bin/activate ```
-5. Install all dependencies
-```(BusyBee)$ pip install -r requirements.txt ```
-6. To exit virtualenv
-```$ deactivate ```
+To get BusyBee up and running quickly:
+1. Install Fabric
+	```$ pip install fabric```
+2. Complete set up with 
+	```$ fab first_setup```
+
+The long way:
+	1. Ensure that you have Python 2.7
+	2. Install your Virtual Envitonment 
+		```$ pip install virtualenv ```
+	3. Create virtual enviornment
+		```$ virtualenv . ```
+	4. Enter virtual environment 
+		```$source bin/activate ```
+	5. Install all dependencies
+		```(BusyBee)$ pip install -r requirements.txt ```
+	6. To exit virtualenv
+		```$ deactivate ```
+
+And finally:
+Run script. 
+```$ fab run_local```
 
 
 ## Developing using Sublime
