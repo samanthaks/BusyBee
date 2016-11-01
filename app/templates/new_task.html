@@ -13,10 +13,6 @@
     {{ form.title }}
   </div>
   <div>
-    {{ form.author.label }}
-    {{ form.author }}
-  </div>
-  <div>
     {{ form.details.label }}
     {{ form.details }}
   </div>
@@ -32,6 +28,10 @@
    <div>
     {{ form.drop_off.label }}
     {{ form.drop_off }}
+  </div>
+  <div style="visibility: hidden">
+    {{ form.author }}
+    {{ form.status }}
   </div>
   <input type="submit" value="Create">
 </form>

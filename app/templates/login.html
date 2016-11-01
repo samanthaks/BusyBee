@@ -1,19 +1,23 @@
 {% extends "index.html" %}
-{% block content %}
+{% block title %}LogIn | {{ super() }}{% endblock %}
+{% block current_page %}LogIn{% endblock %}
 
-        <form action="" method="POST" name="form">
+{% block content %}
+        <form action="" method='POST'>
             <div class="col-md-4 col-md-offset-4">
-                {{ form.hidden_tag() }}
+                {{ form.csrf_token }}
                 <div class="form-group">
-                    <label class="control-label" for="username">Username</label>
+                    {{ form.username.label }}
                     {{ form.username }}
                 </div>
                 <div class="form-group">
-                    <label class="control-label" for="password">Password</label>
-                    {{ form.password }}
+                    {{ form.password.label }}
+                    {{ form.password}}
                 </div>
                 <button class="btn btn-default" type="submit">Submit</button>
             </div>
         </form>
+
+        <button class="btn btn-default"><a href="{{ url_for('users.signup') }}">Sign Up</a></button>
 
 {% endblock %}
