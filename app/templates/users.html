@@ -1,0 +1,20 @@
+{% extends "index.html" %}
+{% block title %}Tasks | {{ super() }}{% endblock %}
+{% block current_page %}Tasks{% endblock %}
+
+{% block content %}
+<h2>USERS</h2>
+
+<ul class="tasks">
+	{% for user in users %}
+	<li class="tasks">
+		
+		<h3>{{ user.username }}</h3>
+		<h4>{{ user.password }}</h4>
+		<h4>{{ user.email }}</h4>
+		<h4>{{ user.id }}</h4>
+	</li>
+	{% endfor %}
+</ul>
+
+{% endblock %}
