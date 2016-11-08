@@ -56,7 +56,7 @@ def login():
 def logout():
     logout_user()
     session.clear()
-    return redirect(url_for('login'))
+    return redirect(url_for('users.login'))
 
 
 @login_manager.user_loader

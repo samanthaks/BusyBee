@@ -46,7 +46,7 @@ def view():
             status = int(status)
             if status == 0:
                 Request.objects(id=id).update(status=1)
-                Request.objects(id=id).update(runner=1)
+                Request.objects(id=id).update(runner=session['username'])
 
             if status == 1:
                 Request.objects(id=id).update(status=2)
