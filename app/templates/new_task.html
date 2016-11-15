@@ -1,39 +1,40 @@
-{% extends "index.html" %}
+{% extends "user_index.html" %}
 {% block title %}Request | {{ super() }}{% endblock %}
 {% block current_page %}Request{% endblock %}
 
 {% block content %}
-<h2>Post A New Request</h2>
-
-
+<div class="form-group col-lg-12">
+  <h3>Post A New Request</h3>
+</div>
 <form action="" method="POST">
-  {{ form.csrf_token }}
-  <div>
-    {{ form.title.label}}
-    {{ form.title }}
+  <div class="col-lg-12 text-center">
+    {{ form.csrf_token }}
+    <div class="form-group row">
+      {{ form.title.label(class="col-xs-3 form-label-horizontal")}}
+      <div class="col-sm-5">{{ form.title(type="text", class="form-control", placeholder="Title")  }}</div>
+    </div>
+    <div class="form-group row">
+      {{ form.details.label(class="col-xs-3 form-label-horizontal") }}
+      <div class="col-sm-5">{{ form.details(rows="3", type="text", class="form-control", placeholder="Details")  }}</div>
+    </div>
+    <div class="form-group row">
+      {{ form.weight.label(class="col-xs-3 form-label-horizontal") }}
+      <div class="col-sm-5">{{ form.weight(type="number", class="form-control", placeholder="Title", step="0.01")  }}</div>
+    </div>
+    <div class="form-group row">
+      {{ form.pick_up.label(class="col-xs-3 form-label-horizontal") }}
+      <div class="col-sm-5">{{ form.pick_up(type="text", class="form-control", placeholder="Details") }}</div>
+    </div>
+    <div class="form-group row">
+      {{ form.drop_off.label(class="col-xs-3 form-label-horizontal") }}
+      <div class="col-sm-5">{{ form.drop_off(type="text", class="form-control", placeholder="Details") }}</div>
+    </div>
+    <div style="visibility: hidden">
+      {{ form.author }}
+      {{ form.status }}
+    </div>
+    <input class="btn btn-default"  type="submit" value="Create">
   </div>
-  <div>
-    {{ form.details.label }}
-    {{ form.details }}
-  </div>
-  
-   <div>
-    {{ form.weight.label }}
-    {{ form.weight }}
-  </div>
-   <div>
-    {{ form.pick_up.label }}
-    {{ form.pick_up }}
-  </div>
-   <div>
-    {{ form.drop_off.label }}
-    {{ form.drop_off }}
-  </div>
-  <div style="visibility: hidden">
-    {{ form.author }}
-    {{ form.status }}
-  </div>
-  <input type="submit" value="Create">
 </form>
 
 

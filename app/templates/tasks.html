@@ -1,14 +1,13 @@
-{% extends "index.html" %}
+{% extends "user_index.html" %}
 {% block title %}Tasks | {{ super() }}{% endblock %}
 {% block current_page %}Tasks{% endblock %}
 
 {% block content %}
-<h2>Check out my tasks!</h2>
+<h2>Tasks</h2>
 
 <ul class="tasks">
-	{% for task in tasks %}
+	{% for task in tasks | sort(attribute='id', reverse = True)%}
 	<li class="tasks">
-		
 		<h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
 		<p>{{ task.details }}</p> <a href="{{ url_for('tasks.view', id=task.id) }}">View Post</a>
 	</li>

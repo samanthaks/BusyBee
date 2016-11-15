@@ -21,10 +21,22 @@ def tasks_page():
 def signup():
     form = UserForm(request.form)
     if request.method == 'POST' and form.validate():
-        form.password.data = generate_password_hash(form.password.data)
-        form.save()
-        flash('Thanks for registering. Please Log In')
-        return redirect(url_for('users.login'))
+
+        try:
+            if(User.objects.get(Username=form.Username.data)):
+                flash("Username already exists, choose another!", category='error')
+                return render_template('signup.html', title='login', form=form)
+        except User.DoesNotExist:
+            try: 
+                if (User.objects.get(Email=form.Email.data)):
+                    flash("Email already exists, choose another!", category='error')
+                    return render_template('signup.html', title='login', form=form)
+            except User.DoesNotExist:
+                form.Password.data = generate_password_hash(form.Password.data)
+                form.save()
+                flash('Thanks for registering. Please Log In', category='success')
+                return redirect(url_for('users.login'))
+       
     else:
         return render_template('signup.html', title='sign up', form=form)
 
@@ -35,20 +47,19 @@ def login():
 
     if request.method == 'POST':
         try:
-            user = User.objects.get(username=form.username.data)
+            user = User.objects.get(Username=form.Username.data)
 
-            if user and user.validate_login(user.password, form.password.data):
-                user_obj = User(user.username)
+            if user and user.validate_login(user.Password, form.Password.data):
+                user_obj = User(user.Username)
                 login_user(user_obj, remember=True)
-                session['logged_in'] = True
-                session['username'] = user.username
-                session.permanent = True
-                flash("Logged in successfully! " + current_user.username, category='success')
+                session['Username'] = user.Username
+                session['user_id'] = user.id
+                flash("Logged in successfully!", category='success')
                 next = request.args.get('next')
-                return redirect(next or url_for("tasks.tasks_page"))
+                return redirect(next or url_for("home.home_page"))
             flash("Wrong username or password!", category='error')
         except User.DoesNotExist:
-            flash("User does not exist. Please Sign Up ")
+            flash("User does not exist. Please Sign Up", category='error')
     return render_template('login.html', title='login', form=form)
 
 
@@ -60,9 +71,9 @@ def logout():
 
 
 @login_manager.user_loader
-def load_user(username):
+def load_user(Username):
     try:
-        return User.get(username=username)
+        return User.get(Username=Username)
     except:
         return None
 

@@ -1,43 +1,46 @@
-
-
-{% extends "index.html" %}
+{% extends "user_index.html" %}
 {% block title %}Tasks | {{ super() }} | tasks.title {% endblock %}
 {% block current_page %}Task{% endblock %}
 
 {% block content %}
     <h1>{{ tasks.title }}</h1>
-    <h3 class="task-author"> {{ tasks.author }}</h3>
+    <h4 class="task-author">Author: {{ tasks.author }}</h4>
     <p> Details: {{ tasks.details }}</p>
-    <p> Weight:{{tasks.weight}} </p>
+    <p> Weight: {{tasks.weight}}lbs </p>
     <p> Pick-up Location: {{tasks.pick_up}} </p>
     <p> Drop-off Location: {{tasks.drop_off}} </p>
-    <p> Status: <span id="stat">{% if tasks.status is equalto 0%} New {% elif tasks.status is equalto 1%} Assigned {% elif tasks.status is equalto 2%} Completed {% else %} Completed and Accepted {% endif %}</span></p>
+    <p> Status: 
+        <span id="stat">
+            {% if tasks.status is equalto 0%} New 
+            {% elif tasks.status is equalto 1%} Assigned 
+            {% elif tasks.status is equalto 2%} Completed 
+            {% else %} Completed and Accepted {% endif %}
+        </span>
+    </p>
     {% if tasks.status > 0 %} <p> Runner: {{tasks.runner}} </p> {% endif %}
 
     {% if tasks.author is not equalto user %}
-    {% if tasks.status is equalto 0 %}
-    <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
-    <button type="submit" class="btn btn-primary" id="start">Accept Task</button>
-    </form>
-    {% endif %}
-    {% if tasks.status is equalto 1 %}
-    <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
-    <button type="submit" class="btn btn-secondary" id="finish">Complete Task</button>
-    </form>
-    {% endif %}
+        {% if tasks.status is equalto 0 %}
+            <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
+                <button type="submit" class="btn btn-primary" id="start">Accept Task</button>
+            </form>
+        {% endif %}
+        {% if tasks.status is equalto 1 %}
+            <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
+                <button type="submit" class="btn btn-secondary" id="finish">Complete Task</button>
+            </form>
+        {% endif %}
     {% endif %}
 
     {% if tasks.author is equalto user %}
-    {% if tasks.status is equalto 2 %}
-    <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
-    <button type="submit" class="btn btn-success" id="complete">Approve Completed Task</button>
-    </form>
+        {% if tasks.status is equalto 2 %}
+        <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
+            <button type="submit" class="btn btn-success" id="complete">Approve Completed Task</button>
+        </form>
+        {% endif %}
     {% endif %}
-    {% endif %}
-
-    <button type="button" class="btn btn-info"><a class="post-button" href="{{ url_for('tasks.tasks_page') }}">Back to Tasks</a></button>
+    <br>
+    <div>
+     <a class="post-button" href="{{ url_for('tasks.tasks_page') }}"><button type="button" class="btn btn-info">Back to Tasks</button></a></div>
    
-
-
-
 {% endblock %}

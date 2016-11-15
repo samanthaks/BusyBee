@@ -4,15 +4,15 @@ from flask_mongoengine.wtf import model_form
 
 
 class User(db.Document):
-    email = db.StringField(required=True)
-    username = db.StringField(required=True)
-    password = db.StringField(required=True)
+    Email = db.StringField(required=True,max_length=100)
+    Username = db.StringField(required=True,max_length=50)
+    Password = db.StringField(required=True,max_length=100)
 
-    def __init__(self, username=None, email=None, password=None, *args, **kwargs):
+    def __init__(self, Username=None, Email=None, Password=None, *args, **kwargs):
         super(db.Document, self).__init__(*args, **kwargs)
-        self.username = username
-        self.password = password
-        self.email = email
+        self.Username = Username
+        self.Password = Password
+        self.Email = Email
         self.is_authenticated = False
 
     def is_authenticated(self):
@@ -25,7 +25,7 @@ class User(db.Document):
         return False
 
     def get_id(self):
-        return self.username
+        return self.Username
 
     @staticmethod
     def validate_login(password_hash, password):
