@@ -21,7 +21,6 @@ def tasks_page():
 def signup():
     form = UserForm(request.form)
     if request.method == 'POST' and form.validate():
-
         try:
             if(User.objects.get(Username=form.Username.data)):
                 flash("Username already exists, choose another!", category='error')
@@ -57,7 +56,7 @@ def login():
                 flash("Logged in successfully!", category='success')
                 next = request.args.get('next')
                 return redirect(next or url_for("home.home_page"))
-            flash("Wrong username or password!", category='error')
+            flash("Wrong password!", category='error')
         except User.DoesNotExist:
             flash("User does not exist. Please Sign Up", category='error')
     return render_template('login.html', title='login', form=form)
@@ -67,6 +66,7 @@ def login():
 def logout():
     logout_user()
     session.clear()
+    flash("You were logged out!", category='success')
     return redirect(url_for('users.login'))
 
 

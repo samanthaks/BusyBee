@@ -28,8 +28,8 @@ def new_task():
 
         if request.method == 'POST' and form.validate():
             form.save()
+            flash("Task successfully created!", category='success')
             return redirect(url_for('tasks.tasks_page'))
-
         return render_template('new_task.html', form=form)
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))
@@ -45,16 +45,34 @@ def view():
         status = request.args.get('status')
         if status is not None:
             status = int(status)
-            if status == 0:
+            if status == 0 and session['Username'] != task.author:
                 Request.objects(id=id).update(status=1)
                 Request.objects(id=id).update(runner=session['Username'])
+                flash("Task Status Updated: Assigned to " + session['Username'], category='success')
+            elif status == 0 and session['Username'] == task.author:
+                flash("You cannot assign yourself your own task", category='error')
 
-            if status == 1:
-                Request.objects(id=id).update(status=2)
+            elif status == 1 and session['Username'] != task.author:
+                if session['Username'] == task.runner:
+                    Request.objects(id=id).update(status=2)
+                    flash("Task Status Updated: Completed", category='success')
+                else:
+                    flash("You cannot update a task someone else is doing", category='error')
 
-            if status == 2:
+            elif status == 2 and session['Username'] == task.author:
                 Request.objects(id=id).update(status=3)
+                flash("Task Status Updated: Completed & Accepted", category='success')
+            elif status == 2 and session['Username'] != task.author:
+                flash("Only the Task Author can update this task", category='error')
+
+            else:
+                redirect(url_for("tasks.page_not_found"))
+
             return redirect(url_for('tasks.view', id=task.id))
         return render_template('task_post.html', tasks=task, user=session['Username'])
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))
+
+@tasks.errorhandler(404)
+def page_not_found(error):
+    return render_template('404.html'), 404

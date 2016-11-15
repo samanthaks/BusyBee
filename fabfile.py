@@ -19,3 +19,7 @@ def update_req():
 
 def enter_venv():
     local("source bin/activate")
+
+
+def run_tests():
+	local("python -m unittest tests")

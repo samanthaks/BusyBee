@@ -3,7 +3,7 @@
 {% block current_page %}Tasks{% endblock %}
 
 {% block content %}
-<h2>Tasks</h2>
+<h2>All Tasks</h2>
 
 <ul class="tasks">
 	{% for task in tasks | sort(attribute='id', reverse = True)%}

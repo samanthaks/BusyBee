@@ -26,9 +26,11 @@
             </form>
         {% endif %}
         {% if tasks.status is equalto 1 %}
-            <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
-                <button type="submit" class="btn btn-secondary" id="finish">Complete Task</button>
-            </form>
+            {% if tasks.runner is equalto user %}
+                <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
+                    <button type="submit" class="btn btn-secondary" id="finish">Complete Task</button>
+                </form>
+            {% endif %}
         {% endif %}
     {% endif %}
 
