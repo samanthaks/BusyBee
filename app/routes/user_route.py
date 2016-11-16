@@ -60,3 +60,4 @@ def logout():
     session.clear()
     flash("You were logged out!", category='success')
     return redirect(url_for('users.login'))
+
