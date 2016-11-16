@@ -3,15 +3,14 @@
 {% block current_page %}Tasks{% endblock %}
 
 {% block content %}
-<h2>All Tasks</h2>
+	<h2>All Tasks</h2>
 
-<ul class="tasks">
-	{% for task in tasks | sort(attribute='id', reverse = True)%}
-	<li class="tasks">
-		<h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
-		<p>{{ task.details }}</p> <a href="{{ url_for('tasks.view', id=task.id) }}">View Post</a>
-	</li>
-	{% endfor %}
-</ul>
-
+	<ul class="tasks">
+		{% for task in tasks | sort(attribute='id', reverse = True)%}
+		<li class="tasks">
+			<h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
+			<p>{{ task.details }}</p> <a href="{{ url_for('tasks.view', id=task.id) }}">View Post</a>
+		</li>
+		{% endfor %}
+	</ul>
 {% endblock %}

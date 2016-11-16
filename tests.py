@@ -22,12 +22,11 @@ class Test_Class(TestCase):
         database = connect()
         database.drop_database('test_db')
 
-    def test_non_user_pages(self):
-        render_templates = False
-        #check pages where user is not logged in 
+    def test_home(self):
         index_page = self.client.get('/')
         assert 'Welcome to BusyBee' in index_page.data
 
+    def test_login_page(self):
         login_page = self.client.get('/login')
         assert 'Username' in login_page.data
         assert 'Password' in login_page.data

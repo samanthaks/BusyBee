@@ -1,27 +1,26 @@
 <!DOCTYPE html>
-<head>
-  <title>{% block title %}BusyBee{% endblock %}</title>
-  <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/style.css') }}">
-  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-</head>
+    <head>
+        <title>{% block title %}BusyBee{% endblock %}</title>
+        <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/style.css') }}">
+        <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    </head>
 
-<body>
-  <div class="container">
-    <div class="header">
-      {% include "user_nav.html" %}
-    </div>
-    <div class="container">
-      {% include "flash.html" %}
-    </div>
-  </div>
+    <body>
+        <div class="container">
+            <div class="header">
+                {% include "user_nav.html" %}
+            </div>
+            <div class="container">
+                {% include "flash.html" %}
+            </div>
+        </div>
 
-  <div class="container">
-    <div class="content">
-      {% block content %}
-      {% endblock %}
-    </div>
-  </div>
-</body>
-
+        <div class="container">
+            <div class="content">
+                {% block content %}
+                {% endblock %}
+            </div>
+        </div>
+    </body>
 </html>

@@ -12,4 +12,5 @@ class Request(db.Document):
     weight = db.DecimalField(required=True)
     status = db.IntField(required=True)
 
+
 RequestForm = model_form(Request)

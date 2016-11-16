@@ -1,7 +1,6 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, flash, current_app, abort
+from flask import Blueprint, render_template, redirect, url_for, request,\
+                  session, flash, current_app, abort
 from app.models.task_model import Request, RequestForm
-from flask_login import current_user, login_required
-from printdebug import printobject, debug
 
 
 tasks = Blueprint('tasks', __name__, template_folder='../templates')
@@ -79,6 +78,7 @@ def view():
         return render_template('task_post.html', tasks=task, user=session['Username'])
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))
+
 
 @tasks.errorhandler(404)
 def page_not_found(error):

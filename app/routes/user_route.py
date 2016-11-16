@@ -1,9 +1,6 @@
-
 from flask import Blueprint, request, redirect, render_template, url_for, \
-                    flash, session, g, current_app
-from flask_login import login_user, logout_user, current_user
+                    flash, session, current_app
 from app.models.user_model import User, UserForm
-from printdebug import debug, printobject
 from werkzeug.security import generate_password_hash
 
 
@@ -26,7 +23,7 @@ def signup():
                 flash("Username already exists, choose another!", category='error')
                 return render_template('signup.html', title='login', form=form)
         except User.DoesNotExist:
-            try: 
+            try:
                 if (User.objects.get(Email=form.Email.data)):
                     flash("Email already exists, choose another!", category='error')
                     return render_template('signup.html', title='login', form=form)
@@ -35,7 +32,6 @@ def signup():
                 form.save()
                 flash('Thanks for registering. Please Log In', category='success')
                 return redirect(url_for('users.login'))
-       
     else:
         return render_template('signup.html', title='sign up', form=form)
 
@@ -49,7 +45,6 @@ def login():
             user = User.objects.get(Username=form.Username.data)
 
             if user and user.validate_login(user.Password, form.Password.data):
-                user_obj = User(user.Username)
                 session['Username'] = user.Username
                 flash("Logged in successfully!", category='success')
                 next = request.args.get('next')
@@ -65,8 +60,3 @@ def logout():
     session.clear()
     flash("You were logged out!", category='success')
     return redirect(url_for('users.login'))
-
-
-@user.before_request
-def before_request():
-    g.user = current_user
