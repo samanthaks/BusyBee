@@ -22,4 +22,4 @@ def enter_venv():
 
 
 def run_tests():
-	local("python -m unittest tests")
+    local("python -m unittest tests")

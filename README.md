@@ -35,6 +35,8 @@ Run script.
 	4. Select Package Control: Install Package --> Install [SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8)
 3. Follow the intructions at [https://github.com/SublimeLinter/SublimeLinter-flake8](https://github.com/SublimeLinter/SublimeLinter-flake8) to set up flake-8
 
+## Run Testing
+```$ fab run_tests```
 
 ## About BusyBee
 * Built in [Flask](http://flask.pocoo.org/)

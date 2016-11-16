@@ -1,10 +1,15 @@
-{% extends "index.html" %}
-{% block title %}LogIn | {{ super() }}{% endblock %}
-{% block current_page %}LogIn{% endblock %}
-
-{% block content %}
-	<h1>Page Not Found</h1>
-  	<p>What you were looking for is just not there. (bummer)</p>
-  	<p><a href="{{ url_for('home.home_page') }}">go somewhere nice</a></p>
-
-{% endblock %} 
+<!DOCTYPE html>
+	<head>
+	  <title>{% block title %}BusyBee{% endblock %}</title>
+	  <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/style.css') }}">
+	  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+	  <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+	</head>
+	<body>
+		<div class="container">
+			<h1>Page Not Found</h1>
+		  	<p>What you were looking for is just not there. (bummer)</p>
+		  	<p><a href="{{ url_for('home.home_page') }}">go somewhere nice</a></p>
+		 </div>
+	</body>
+</html>
