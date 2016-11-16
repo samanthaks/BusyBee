@@ -7,5 +7,5 @@ home = Blueprint('home', __name__, template_folder='../templates')
 def home_page():
     """The home page."""
     if 'Username' in session:
-    	return render_template('user_index.html')
+        return render_template('user_index.html')
     return render_template('index.html')

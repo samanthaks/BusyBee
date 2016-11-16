@@ -1,6 +1,6 @@
-from app import login_manager
+
 from flask import Blueprint, request, redirect, render_template, url_for, \
-                    flash, session, g
+                    flash, session, g, current_app
 from flask_login import login_user, logout_user, current_user
 from app.models.user_model import User, UserForm
 from printdebug import debug, printobject
@@ -50,9 +50,7 @@ def login():
 
             if user and user.validate_login(user.Password, form.Password.data):
                 user_obj = User(user.Username)
-                login_user(user_obj, remember=True)
                 session['Username'] = user.Username
-                session['user_id'] = user.id
                 flash("Logged in successfully!", category='success')
                 next = request.args.get('next')
                 return redirect(next or url_for("home.home_page"))
@@ -64,18 +62,9 @@ def login():
 
 @user.route('/logout')
 def logout():
-    logout_user()
     session.clear()
     flash("You were logged out!", category='success')
     return redirect(url_for('users.login'))
-
-
-@login_manager.user_loader
-def load_user(Username):
-    try:
-        return User.get(Username=Username)
-    except:
-        return None
 
 
 @user.before_request

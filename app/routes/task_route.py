@@ -1,8 +1,7 @@
-from flask import Blueprint, render_template, redirect, url_for, request, session, flash
+from flask import Blueprint, render_template, redirect, url_for, request, session, flash, current_app, abort
 from app.models.task_model import Request, RequestForm
 from flask_login import current_user, login_required
 from printdebug import printobject, debug
-from app import app
 
 
 tasks = Blueprint('tasks', __name__, template_folder='../templates')
@@ -45,28 +44,36 @@ def view():
         status = request.args.get('status')
         if status is not None:
             status = int(status)
-            if status == 0 and session['Username'] != task.author:
+            if status == 0 and session['Username'] != task.author and task.status == 0:
                 Request.objects(id=id).update(status=1)
                 Request.objects(id=id).update(runner=session['Username'])
                 flash("Task Status Updated: Assigned to " + session['Username'], category='success')
+
             elif status == 0 and session['Username'] == task.author:
                 flash("You cannot assign yourself your own task", category='error')
 
-            elif status == 1 and session['Username'] != task.author:
-                if session['Username'] == task.runner:
-                    Request.objects(id=id).update(status=2)
-                    flash("Task Status Updated: Completed", category='success')
-                else:
-                    flash("You cannot update a task someone else is doing", category='error')
+            elif status == 0 and task.status == 1:
+                flash("This task has already been assigned", category='error')
 
-            elif status == 2 and session['Username'] == task.author:
+            elif status == 1 and session['Username'] == task.runner and task.status == 1:
+                Request.objects(id=id).update(status=2)
+                flash("Task Status Updated: Completed", category='success')
+
+            elif status == 1 and session['Username'] != task.runner and task.status == 1:
+                flash("You cannot update a task someone else is doing", category='error')
+
+            elif status == 2 and session['Username'] == task.author and task.status == 2:
                 Request.objects(id=id).update(status=3)
                 flash("Task Status Updated: Completed & Accepted", category='success')
-            elif status == 2 and session['Username'] != task.author:
-                flash("Only the Task Author can update this task", category='error')
+
+            elif status == 2 and session['Username'] == task.author and task.status == 3:
+                flash("You have already marked this task Completed & Accepted", category='error')
+
+            elif status == 2 and session['Username'] != task.author and task.status == 2:
+                flash("Only the Task Author can mark this task Completed & Accepted", category='error')
 
             else:
-                redirect(url_for("tasks.page_not_found"))
+                abort(404)
 
             return redirect(url_for('tasks.view', id=task.id))
         return render_template('task_post.html', tasks=task, user=session['Username'])
