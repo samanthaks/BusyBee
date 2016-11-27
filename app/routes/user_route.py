@@ -61,3 +61,11 @@ def logout():
     flash("You were logged out!", category='success')
     return redirect(url_for('users.login'))
 
+
+@user.route('/user/<username>')
+def view_profile(username):
+    if 'Username' in session:
+        user = User.objects.get_or_404(Username=username)
+        return render_template('profile.html', user=user)
+    flash("You need to be logged in to access this page", category='error')
+    return redirect(url_for("users.login"))

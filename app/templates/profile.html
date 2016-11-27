@@ -1,0 +1,11 @@
+{% extends "user_index.html" %}
+{% block title %}User Profile | {{ super() }} | tasks.title {% endblock %}
+{% block current_page %} {{ user.Username }} {% endblock %}
+
+{% block content %}
+<h3>Username: {{ user.Username }}</h3> 
+<h3>Email: {{ user.Email }}</h3>
+<h3># of Tasks Completed:</h3>
+<h3>Reviews:</h3>
+
+{% endblock %}

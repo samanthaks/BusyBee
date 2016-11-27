@@ -10,6 +10,9 @@
       <a href="{{ url_for('tasks.new_task') }}">Submit New Request</a>
     </li>
     <li role="presentation">
+      <a href="{{ url_for('users.view_profile', username=session['Username']) }}">Your Profile</a>
+    </li>
+    <li role="presentation">
       <a href="{{ url_for('users.logout') }}">Logout</a>
     </li>
   </ul>
