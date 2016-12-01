@@ -1,8 +1,9 @@
+"""task_model.py"""
 from app import db
 from flask_mongoengine.wtf import model_form
 
-
 class Request(db.Document):
+    """create Request class"""
     title = db.StringField(required=True, max_length=200)
     author = db.StringField(required=True, max_length=100)
     details = db.StringField(required=True, max_length=1000)
