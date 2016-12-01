@@ -1,4 +1,4 @@
-from fabric.api import local
+from fabric.api import local, env
 
 
 def first_setup():
@@ -23,3 +23,42 @@ def enter_venv():
 
 def run_tests():
     local("python -m unittest tests")
+
+
+def run_SA():
+    env.warn_only = True
+    user_route_test()
+    task_route_test()
+    home_route_test()
+    user_model_test()
+    task_model_test()
+    init_test()
+    unittest_test()
+
+
+def user_route_test():
+    local("pylint app/routes/user_route.py")
+
+
+def task_route_test():
+    local("pylint app/routes/task_route.py")
+
+
+def home_route_test():
+    local("pylint app/routes/home_route.py")
+
+
+def user_model_test():
+    local("pylint app/models/user_model.py")
+
+
+def task_model_test():
+    local("pylint app/models/task_model.py")
+
+
+def init_test():
+    local("pylint app/__init__.py")
+
+
+def unittest_test():
+    local("pylint tests.py")
