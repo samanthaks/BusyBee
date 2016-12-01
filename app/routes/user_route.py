@@ -18,24 +18,29 @@ def tasks_page():
 @user.route('/signup', methods=['GET', 'POST'])
 def signup():
     form = UserForm(request.form)
-    if request.method == 'POST' and form.validate():
-        try:
-            if(User.objects.get(Username=form.Username.data)):
-                flash("Username already exists, choose another!", category='error')
-                return render_template('signup.html', title='login', form=form)
-        except User.DoesNotExist:
+    if request.method == 'GET':
+        return render_template('signup.html', title='sign up', form=form)
+    if request.method == 'POST':
+        if form.validate():
             try:
-                if (User.objects.get(Email=form.Email.data)):
-                    flash("Email already exists, choose another!", category='error')
+                if(User.objects.get(Username=form.Username.data)):
+                    flash("Username already exists, choose another!", category='error')
                     return render_template('signup.html', title='login', form=form)
             except User.DoesNotExist:
-                form.Password.data = generate_password_hash(form.Password.data)
-                form.save()
-                flash('Thanks for registering. Please Log In', category='success')
-                return redirect(url_for('users.login'))
-    else:
-        return render_template('signup.html', title='sign up', form=form)
-
+                try:
+                    if (User.objects.get(Email=form.Email.data)):
+                        flash("Email already exists, choose another!", category='error')
+                        return render_template('signup.html', title='login', form=form)
+                except User.DoesNotExist:
+                    form.Password.data = generate_password_hash(form.Password.data)
+                    form.save()
+                    flash('Thanks for registering. Please Log In', category='success')
+                    return redirect(url_for('users.login'))
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    flash(error, category='error')
+            return render_template('signup.html', title='sign up', form=form)
 
 @user.route('/login', methods=['GET', 'POST'])
 def login():

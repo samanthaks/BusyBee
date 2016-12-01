@@ -8,7 +8,7 @@
                 {{ form.csrf_token }}
                 <div class="form-group row">
                     {{ form.Email.label(class="col-xs-3 form-label-horizontal") }}
-                    <div class="col-sm-5">{{ form.Email(type="email", class="form-control", placeholder="Email")  }}</div>
+                    <div class="col-sm-5">{{ form.Email(type="email", class="form-control", id="email", placeholder="Email")  }}</div>
                 </div>
                 <div class="form-group row">
                     {{ form.Username.label(class="col-xs-3 form-label-horizontal") }}
@@ -18,7 +18,8 @@
                     {{ form.Password.label(class="col-xs-3 form-label-horizontal") }}
                     <div class="col-sm-5">{{ form.Password(type="password", class="form-control", placeholder="Password") }}</div>
                 </div>
-                <button class="btn btn-default" type="submit">Submit</button>
+                <button class="btn btn-default" id="submit" type="submit">Submit</button>
             </div>
         </form>
 {% endblock %}
+

@@ -4,7 +4,7 @@ from flask_mongoengine.wtf import model_form
 
 
 class User(db.Document):
-    Email = db.StringField(required=True, max_length=100)
+    Email = db.EmailField(required=True)
     Username = db.StringField(required=True, max_length=50)
     Password = db.StringField(required=True, max_length=100)
 
@@ -31,6 +31,5 @@ class User(db.Document):
     @staticmethod
     def validate_login(password_hash, password):
         return check_password_hash(password_hash, password)
-
 
 UserForm = model_form(User)
