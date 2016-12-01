@@ -1,5 +1,6 @@
+"""Task Routes"""
 from flask import Blueprint, render_template, redirect, url_for, request,\
-                  session, flash, current_app, abort
+                  session, flash, abort
 from app.models.task_model import Request, RequestForm
 
 
@@ -37,8 +38,8 @@ def new_task():
 def view():
     """View and edit tasks"""
     if 'Username' in session:
-        id = request.args.get('id')
-        task = Request.objects.get_or_404(id=id)
+        task_id = request.args.get('id')
+        task = Request.objects.get_or_404(id=task_id)
 
         if task.status == -1:
             abort(404)
@@ -47,8 +48,8 @@ def view():
         if status is not None:
             status = int(status)
             if status == 0 and session['Username'] != task.author and task.status == 0:
-                Request.objects(id=id).update(status=1)
-                Request.objects(id=id).update(runner=session['Username'])
+                Request.objects(id=task_id).update(status=1)
+                Request.objects(id=task_id).update(runner=session['Username'])
                 flash("Task Status Updated: Assigned to " + session['Username'], category='success')
 
             elif status == 0 and session['Username'] == task.author:
@@ -58,14 +59,14 @@ def view():
                 flash("This task has already been assigned", category='error')
 
             elif status == 1 and session['Username'] == task.runner and task.status == 1:
-                Request.objects(id=id).update(status=2)
+                Request.objects(id=task_id).update(status=2)
                 flash("Task Status Updated: Completed", category='success')
 
             elif status == 1 and session['Username'] != task.runner and task.status == 1:
                 flash("You cannot update a task someone else is doing", category='error')
 
             elif status == 2 and session['Username'] == task.author and task.status == 2:
-                Request.objects(id=id).update(status=3)
+                Request.objects(id=task_id).update(status=3)
                 flash("Task Status Updated: Completed & Accepted", category='success')
 
             elif status == 2 and session['Username'] == task.author and task.status == 3:
@@ -83,8 +84,9 @@ def view():
     return redirect(url_for("users.login"))
 
 
-@tasks.route('/write_review', methods=['GET','POST'])
+@tasks.route('/write_review', methods=['GET', 'POST'])
 def write_review():
+    """Write runner or author review"""
     if 'Username' in session:
         id = request.args.get('id')
         task = Request.objects.get_or_404(id=id)
@@ -148,6 +150,7 @@ def write_review():
 
 @tasks.route('/delete', methods=['GET'])
 def remove():
+    """Remove Request"""
     if 'Username' in session:
         id = request.args.get('id')
         task = Request.objects.get_or_404(id=id)
@@ -164,4 +167,5 @@ def remove():
 
 @tasks.errorhandler(404)
 def page_not_found(error):
+    """Displays 404"""
     return render_template('404.html'), 404

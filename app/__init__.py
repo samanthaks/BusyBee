@@ -10,6 +10,7 @@ def create_app(MONGO={'db': 'BusyBee'},
                TESTING=False,
                CSRF_ENABLED=False,
                WTF_CSRF_ENABLED=False):
+    """Create app using config variables"""
     app = Flask(__name__)
 
     app.config["DEBUG"] = True

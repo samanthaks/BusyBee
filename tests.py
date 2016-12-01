@@ -1,3 +1,4 @@
+"""All Unit Tests"""
 from app import create_app as create_app_base
 from app.models.task_model import Request
 from mongoengine import connect
@@ -6,7 +7,7 @@ from flask_testing import TestCase
 
 
 class Test_Class(TestCase):
-
+    """Main Test Class"""
     def create_app(self):
         return create_app_base(
             MONGO={'db': 'test_db'},
@@ -23,10 +24,12 @@ class Test_Class(TestCase):
         database.drop_database('test_db')
 
     def test_home(self):
+        """Test Home Page"""
         index_page = self.client.get('/')
         assert 'Welcome to BusyBee' in index_page.data
 
     def test_login_page(self):
+        """Test Login Page"""
         login_page = self.client.get('/login')
         assert 'Username' in login_page.data
         assert 'Password' in login_page.data
@@ -40,6 +43,7 @@ class Test_Class(TestCase):
         assert 'Submit' in signup_page.data
 
     def test_user(self):
+        """Test User Route"""
         # Check valid credentials
         valid_signup = self.client.post('/signup', data=dict(Email='test1@test.com', Username='test1', Password='password'), follow_redirects=True)
         assert 'Thanks for registering. Please Log In' in valid_signup.data
@@ -69,17 +73,19 @@ class Test_Class(TestCase):
         assert 'You were logged out!' in logout.data
 
     def test_user_profile(self):
+        """Test User Profile"""
         #valid view
         self.client.post('/signup', data=dict(Email='test1@test.com', Username='test1', Password='password'), follow_redirects=True)
         self.client.post('/login', data=dict(Username='test1', Password='password'), follow_redirects=True)
-        profile =  self.client.get('/user/test1')
+        profile = self.client.get('/user/test1')
         assert 'User Profile | BusyBee' in profile.data
 
         #invalid view
-        profile =  self.client.get('/user/test2')
+        profile = self.client.get('/user/test2')
         assert '404 Not Found' in profile.data
 
     def test_tasks(self):
+        """Test Tasks Route"""
         # views w/o login
         invalid_view = self.client.get('/tasks', follow_redirects=True)
         assert 'You need to be logged in to access this page' in invalid_view.data
@@ -91,7 +97,7 @@ class Test_Class(TestCase):
         assert 'You need to be logged in to access this page' in invalid_view.data
 
         # valid login
-        valid_signup = self.client.post('/signup', data=dict(Email='test1@test.com', Username='test1', Password='password'), follow_redirects=True)
+        self.client.post('/signup', data=dict(Email='test1@test.com', Username='test1', Password='password'), follow_redirects=True)
         valid_login = self.client.post('/login', data=dict(Username='test1', Password='password'), follow_redirects=True)
         assert 'Logged in successfully!' in valid_login.data
 
@@ -111,7 +117,7 @@ class Test_Class(TestCase):
         assert 'Page Not Found' in valid_view.data
 
         # Test posting task
-        new_task = self.client.post('/new_task', data=dict(title="Package1",details="toothpaste",weight=1,pick_up="Wein",drop_off="Lerner",author="test1",status=0), follow_redirects=True)
+        new_task = self.client.post('/new_task', data=dict(title="Package1", details="toothpaste", weight=1, pick_up="Wein", drop_off="Lerner", author="test1", status=0), follow_redirects=True)
         assert 'Task successfully created!' in new_task.data
 
         # view task invalid
@@ -129,7 +135,7 @@ class Test_Class(TestCase):
         invalid_request = self.client.get('/view?status=0&id='+str(task.id), follow_redirects=True)
         assert 'You cannot assign yourself your own task' in invalid_request.data
         task = Request.objects.get(author="test1")
-        self.assertEqual(task.status,0)
+        self.assertEqual(task.status, 0)
 
         # user2 chooses to run task
         self.client.post('/logout', follow_redirects=True)
@@ -138,7 +144,7 @@ class Test_Class(TestCase):
         valid_task_run = self.client.get('/view?status=0&id='+str(task.id), follow_redirects=True)
         task = Request.objects.get(author="test1")
         assert 'Task Status Updated: Assigned to test2' in valid_task_run.data
-        self.assertEqual(task.status,1)
+        self.assertEqual(task.status, 1)
 
         # another user wants to run task same task
         self.client.post('/logout', follow_redirects=True)
@@ -178,11 +184,12 @@ class Test_Class(TestCase):
         assert 'Page Not Found' in valid_task_run.data
 
     def test_remove_task(self):
+        """Test Remove Task"""
         # make task
         self.client.post('/signup', data=dict(Email='test1@test.com', Username='test1', Password='password'), follow_redirects=True)
         self.client.post('/signup', data=dict(Email='test3@test.com', Username='test3', Password='password'), follow_redirects=True)
         self.client.post('/login', data=dict(Username='test1', Password='password'), follow_redirects=True)
-        new_task = self.client.post('/new_task', data=dict(title="Package1",details="toothpaste",weight=1,pick_up="Wein",drop_off="Lerner",author="test1",status=0), follow_redirects=True)
+        self.client.post('/new_task', data=dict(title="Package1", details="toothpaste", weight=1, pick_up="Wein", drop_off="Lerner", author="test1", status=0), follow_redirects=True)
         database = connect()
         task = Request.objects.get(author="test1")
 
@@ -201,7 +208,7 @@ class Test_Class(TestCase):
         assert 'Page Not Found' in fail_delete.data
 
         # fail delete (author after someone has accepted task)
-        valid_task_run = self.client.get('/view?status=0&id='+str(task.id), follow_redirects=True)
+        self.client.get('/view?status=0&id='+str(task.id), follow_redirects=True)
         self.client.post('/logout', follow_redirects=True)
         self.client.post('/login', data=dict(Username='test1', Password='password'), follow_redirects=True)
         fail_delete = self.client.get('/delete?id='+str(task.id), follow_redirects=True)
@@ -211,7 +218,7 @@ class Test_Class(TestCase):
         self.client.post('/logout', follow_redirects=True)
         self.client.post('/signup', data=dict(Email='test2@test.com', Username='test2', Password='password'), follow_redirects=True)
         self.client.post('/login', data=dict(Username='test2', Password='password'), follow_redirects=True)
-        new_task = self.client.post('/new_task', data=dict(title="Package2",details="toothpaste",weight=1,pick_up="Wein",drop_off="Lerner",author="test2",status=0), follow_redirects=True)
+        new_task = self.client.post('/new_task', data=dict(title="Package1", details="toothpaste", weight=1, pick_up="Wein", drop_off="Lerner", author="test1", status=0), follow_redirects=True)
         database = connect()
         task = Request.objects.get(author="test2")
 
@@ -228,11 +235,12 @@ class Test_Class(TestCase):
         assert 'Page Not Found' in fail_delete.data
 
     def test_reviews(self):
+        """Test Review Creation"""
         # create users and create and run tasks to complete and accept
         self.client.post('/signup', data=dict(Email='test1@test.com', Username='test1', Password='password'), follow_redirects=True)
         self.client.post('/signup', data=dict(Email='test2@test.com', Username='test2', Password='password'), follow_redirects=True)
         self.client.post('/login', data=dict(Username='test1', Password='password'), follow_redirects=True)
-        self.client.post('/new_task', data=dict(title="Package1",details="toothpaste",weight=1,pick_up="Wein",drop_off="Lerner",author="test1",status=0), follow_redirects=True)
+        self.client.post('/new_task', data=dict(title="Package1", details="toothpaste", weight=1, pick_up="Wein", drop_off="Lerner", author="test1", status=0), follow_redirects=True)
         database = connect()
         task = Request.objects.get(author="test1")
         self.client.post('/logout', follow_redirects=True)
@@ -250,7 +258,7 @@ class Test_Class(TestCase):
 
         self.client.post('/logout', follow_redirects=True)
         self.client.post('/login', data=dict(Username='test2', Password='password'), follow_redirects=True)
-        
+
         # runner tries to leave a review of himself
         fail_review = self.client.get('/write_review?id='+str(task.id)+'&review_for=runner', follow_redirects=True)
         assert 'You do not have access to this review' in fail_review.data
@@ -264,7 +272,6 @@ class Test_Class(TestCase):
         # runner tries to leave duplicate review
         fail_review = self.client.post('/write_review?id='+str(task.id)+'&review_for=author', data=dict(author_rating=5), follow_redirects=True)
         assert 'Page Not Found' in fail_review.data
-        
 
-if(__name__ == '__main__'):
+if __name__ == '__main__':
     unittest.main()
