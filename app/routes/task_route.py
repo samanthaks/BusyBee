@@ -103,8 +103,6 @@ def write_review():
                         abort(404)
                     if form.runner_comment.data is not None and task.runner_comment is None:
                         Request.objects(id=id).update(runner_comment=form.runner_comment.data)
-                    else:
-                        abort(404)
                     flash("Form Submitted!", category='success')
                     return redirect(url_for('tasks.view', id=id))
                 else:
@@ -118,8 +116,6 @@ def write_review():
                         abort(404)
                     if form.author_comment.data is not None and task.author_comment is None:
                         Request.objects(id=id).update(author_comment=form.author_comment.data)
-                    else:
-                        abort(404)
                     flash("Form Submitted!", category='success')
                     return redirect(url_for('tasks.view', id=id))
                 else:
@@ -127,14 +123,22 @@ def write_review():
 
         if request.method == 'GET' and review_for == "runner":
             if task.runner_rating is None:
-                return render_template('runner_review.html', form=form, review_for=review_for, id=id)
+                if session['Username'] == task.author:
+                    return render_template('runner_review.html', form=form, review_for=review_for, id=id)
+                else:
+                    flash("You do not have access to this review", category='error')
+                    return redirect(url_for('tasks.view', id=id))
             else:
                 flash("Rating has already been submitted", category='error')
                 return redirect(url_for('tasks.view', id=id))
 
         if request.method == 'GET' and review_for == "author":
             if task.author_rating is None:
-                return render_template('author_review.html', form=form, review_for=review_for, id=id)
+                if session['Username'] == task.runner:
+                    return render_template('author_review.html', form=form, review_for=review_for, id=id)
+                else:
+                    flash("You do not have access to this review", category='error')
+                    return redirect(url_for('tasks.view', id=id))
             else:
                 flash("Rating has already been submitted", category='error')
                 return redirect(url_for('tasks.view', id=id))
