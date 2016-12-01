@@ -66,10 +66,8 @@ def logout():
 def view_profile(username):
     if 'Username' in session:
         user = User.objects.get_or_404(Username=username)
-        tasks = Request.objects(db.Q(author=session['Username'],status=3) | db.Q(runner=session['Username'],status=3))
-        tasks_authored = Request.objects(author=session['Username'],status=3)
-        tasks_ran = Request.objects(runner=session['Username'],status=3)
-        num_ran = len(tasks_ran)
-        return render_template('profile.html', user=user, tasks=tasks, tasks_authored=tasks_authored, tasks_ran=tasks_ran, num_ran=num_ran)
+        tasks = Request.objects(db.Q(author=username,status=3) | db.Q(runner=username,status=3))
+        num_ran = len(Request.objects(runner=username,status=3))
+        return render_template('profile.html', user=user, tasks=tasks, num_ran=num_ran)
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))
