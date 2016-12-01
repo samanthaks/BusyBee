@@ -40,6 +40,9 @@ def view():
         id = request.args.get('id')
         task = Request.objects.get_or_404(id=id)
 
+        if task.status == -1:
+            abort(404)
+
         status = request.args.get('status')
         if status is not None:
             status = int(status)
@@ -76,6 +79,81 @@ def view():
 
             return redirect(url_for('tasks.view', id=task.id))
         return render_template('task_post.html', tasks=task, user=session['Username'])
+    flash("You need to be logged in to access this page", category='error')
+    return redirect(url_for("users.login"))
+
+
+@tasks.route('/write_review', methods=['GET','POST'])
+def write_review():
+    if 'Username' in session:
+        id = request.args.get('id')
+        task = Request.objects.get_or_404(id=id)
+
+        if task.status == -1:
+            abort(404)
+
+        review_for = request.args.get('review_for')
+        form = RequestForm(request.form)
+        if request.method == 'POST':
+            if review_for == "runner":
+                if session['Username'] == task.author:
+                    if form.runner_rating.data >= 0 and form.runner_rating.data <= 5.0 and task.runner_rating is None:
+                        Request.objects(id=id).update(runner_rating=form.runner_rating.data)
+                    else:
+                        abort(404)
+                    if form.runner_comment.data is not None and task.runner_comment is None:
+                        Request.objects(id=id).update(runner_comment=form.runner_comment.data)
+                    else:
+                        abort(404)
+                    flash("Form Submitted!", category='success')
+                    return redirect(url_for('tasks.view', id=id))
+                else:
+                    abort(404)
+
+            elif review_for == "author":
+                if session['Username'] == task.runner:
+                    if form.author_rating.data >= 0 and form.author_rating.data <= 5.0 and task.author_rating is None:
+                        Request.objects(id=id).update(author_rating=form.author_rating.data)
+                    else:
+                        abort(404)
+                    if form.author_comment.data is not None and task.author_comment is None:
+                        Request.objects(id=id).update(author_comment=form.author_comment.data)
+                    else:
+                        abort(404)
+                    flash("Form Submitted!", category='success')
+                    return redirect(url_for('tasks.view', id=id))
+                else:
+                    abort(404)
+
+        if request.method == 'GET' and review_for == "runner":
+            if task.runner_rating is None:
+                return render_template('runner_review.html', form=form, review_for=review_for, id=id)
+            else:
+                flash("Rating has already been submitted", category='error')
+                return redirect(url_for('tasks.view', id=id))
+
+        if request.method == 'GET' and review_for == "author":
+            if task.author_rating is None:
+                return render_template('author_review.html', form=form, review_for=review_for, id=id)
+            else:
+                flash("Rating has already been submitted", category='error')
+                return redirect(url_for('tasks.view', id=id))
+    flash("You need to be logged in to access this page", category='error')
+    return redirect(url_for("users.login"))
+
+
+@tasks.route('/delete', methods=['GET'])
+def remove():
+    if 'Username' in session:
+        id = request.args.get('id')
+        task = Request.objects.get_or_404(id=id)
+
+        if task.author == session['Username'] and task.status == 0:
+            Request.objects(id=id).update(status=-1)
+            flash("Task successfully deleted", category='success')
+            return redirect(url_for('tasks.tasks_page'))
+        else:
+            abort(404)
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))
 

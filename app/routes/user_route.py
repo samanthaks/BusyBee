@@ -1,7 +1,8 @@
 from flask import Blueprint, request, redirect, render_template, url_for, \
                     flash, session, current_app
-from app.models.user_model import User, UserForm
+from app.models.user_model import User, UserForm, db
 from werkzeug.security import generate_password_hash
+from app.models.task_model import Request
 
 
 user = Blueprint('users', __name__, template_folder='../templates')
@@ -39,7 +40,6 @@ def signup():
 @user.route('/login', methods=['GET', 'POST'])
 def login():
     form = UserForm(request.form)
-
     if request.method == 'POST':
         try:
             user = User.objects.get(Username=form.Username.data)
@@ -66,6 +66,10 @@ def logout():
 def view_profile(username):
     if 'Username' in session:
         user = User.objects.get_or_404(Username=username)
-        return render_template('profile.html', user=user)
+        tasks = Request.objects(db.Q(author=session['Username'],status=3) | db.Q(runner=session['Username'],status=3))
+        tasks_authored = Request.objects(author=session['Username'],status=3)
+        tasks_ran = Request.objects(runner=session['Username'],status=3)
+        num_ran = len(tasks_ran)
+        return render_template('profile.html', user=user, tasks=tasks, tasks_authored=tasks_authored, tasks_ran=tasks_ran, num_ran=num_ran)
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))

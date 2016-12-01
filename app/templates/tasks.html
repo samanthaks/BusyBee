@@ -7,10 +7,16 @@
 
 	<ul class="tasks">
 		{% for task in tasks | sort(attribute='id', reverse = True)%}
-		<li class="tasks">
-			<h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
-			<p>{{ task.details }}</p> <a href="{{ url_for('tasks.view', id=task.id) }}">View Post</a>
-		</li>
+			{% if task.status >= 0 %}
+			<li class="tasks">
+				<h3>{{ task.title }} <small>by {{ task.author }}</small></h3>
+				<p>Status: {% if task.status is equalto 0%} New 
+            		{% elif task.status is equalto 1%} Assigned 
+            		{% elif task.status is equalto 2%} Completed 
+            		{% else %} Completed and Accepted {% endif %}</p>
+            	<p>Details: {{ task.details }}</p> <a href="{{ url_for('tasks.view', id=task.id) }}">View Post</a>
+			</li>
+			{% endif %}
 		{% endfor %}
 	</ul>
 {% endblock %}

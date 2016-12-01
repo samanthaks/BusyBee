@@ -3,9 +3,19 @@
 {% block current_page %} {{ user.Username }} {% endblock %}
 
 {% block content %}
-<h3>Username: {{ user.Username }}</h3> 
-<h3>Email: {{ user.Email }}</h3>
-<h3># of Tasks Completed:</h3>
-<h3>Reviews:</h3>
+	<h3>Username: {{ user.Username }}</h3> 
+	<h3>Email: {{ user.Email }}</h3>
+	<h3># of Tasks Completed: {{ num_ran }}</h3>
+	<h3>Reviews:</h3>
+
+	{% for task in tasks | sort(attribute='id', reverse = True)%}
+		<div class="col-sm-offset-1">
+			<h6>Title: {{ task.title }}</h6>
+			<h6>Role: {% if task.author is equalto user.Username %} Author {% else %} Runner {% endif %} </h6>
+			<h6>Rating: {% if task.author is equalto user.Username %} {{ task.author_rating }} {% else %} {{ task.runner_rating }} {% endif %}</h6>
+			<h6>Comment: {% if task.author is equalto user.Username %} {{ task.author_comment }} {% else %} {{ task.runner_comment }} {% endif %}</h6>
+			</br>
+		</div>
+	{% endfor %}
 
 {% endblock %}

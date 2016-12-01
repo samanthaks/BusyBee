@@ -1,10 +1,17 @@
 {% extends "user_index.html" %}
-{% block title %}Tasks | {{ super() }} | tasks.title {% endblock %}
+{% block title %} {{ super() }} | {{tasks.title}} {% endblock %}
 {% block current_page %}Task{% endblock %}
 
 {% block content %}
-    <h1>{{ tasks.title }}</h1>
-    <h4 class="task-author">Author: {{ tasks.author }}</h4>
+    <h1>
+        {{ tasks.title }} 
+        {% if tasks.author is equalto user %}
+            {% if tasks.status is equalto 0 %}
+            <a href="{{ url_for('tasks.remove',id=tasks.id) }}"><button class="close"><span style="font-size:10px;font-weight:normal;">delete task</span> &times;</button></a>
+            {% endif %}
+        {% endif %}
+    </h1>
+    <h4 class="task-author">Author: <a href="{{ url_for('users.view_profile', username=tasks.author)}}">{{ tasks.author }}</a></h4>
     <p> Details: {{ tasks.details }}</p>
     <p> Weight: {{tasks.weight}}lbs </p>
     <p> Pick-up Location: {{tasks.pick_up}} </p>
@@ -17,7 +24,7 @@
             {% else %} Completed and Accepted {% endif %}
         </span>
     </p>
-    {% if tasks.status > 0 %} <p> Runner: {{tasks.runner}} </p> {% endif %}
+    {% if tasks.status > 0 %} <p> Runner: <a href="{{ url_for('users.view_profile', username=tasks.runner)}}">{{ tasks.runner }}</a></p> {% endif %}
 
     {% if tasks.author is not equalto user %}
         {% if tasks.status is equalto 0 %}
@@ -28,7 +35,7 @@
         {% if tasks.status is equalto 1 %}
             {% if tasks.runner is equalto user %}
                 <form action="{{ url_for('tasks.view', id=tasks.id, status=tasks.status) }}" method='post'>
-                    <button type="submit" class="btn btn-secondary" id="finish">Complete Task</button>
+                    <button type="submit" class="btn btn-primary" id="finish">Complete Task</button>
                 </form>
             {% endif %}
         {% endif %}
@@ -41,7 +48,30 @@
         </form>
         {% endif %}
     {% endif %}
+
+    {% if tasks.status is equalto 3 %}
+        {% if (tasks.runner_rating is equalto None) and (tasks.author is equalto user) %}
+            <a href="{{ url_for('tasks.write_review', id=tasks.id, review_for='runner') }}"><button class="btn btn-warning" id="runner_review">Submit Review of Runner</button></a></br>
+        {% endif %} 
+        {% if (tasks.author_rating is equalto None) and (tasks.runner is equalto user) %}
+            <a href="{{ url_for('tasks.write_review', id=tasks.id, review_for='author') }}"><button class="btn btn-warning" id="author_review">Submit Review of Author</button></a></br>
+        {% endif %}       
+    {% endif %}
+
     <br>
     <div>
-     <a class="post-button" href="{{ url_for('tasks.tasks_page') }}"><button type="button" class="btn btn-info">Back to Tasks</button></a></div>
+     <a class="post-button" href="{{ url_for('tasks.tasks_page') }}"><button type="button" class="btn btn-primary">Back to Tasks</button></a></div>
+
+    {% if (tasks.runner_rating != None) and (tasks.author_rating != None) %}
+        </br>
+        <h4>Reviews</h4>
+        <h5>Review of Runner</h5>
+            {{ tasks.runner_rating }} </br>
+            {{ tasks.runner_comment }}
+            </br>
+        <h5>Review of Author</h5>
+            {{ tasks.author_rating }} </br>
+            {{ tasks.author_comment }}
+            </br>
+    {% endif %}
 {% endblock %}
