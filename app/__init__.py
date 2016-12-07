@@ -1,6 +1,6 @@
 """ run using "python app.py" """
 from flask import Flask
-from flask_mongoengine import MongoEngine, MongoEngineSessionInterface
+from flask_mongoengine import MongoEngine
 from flask_login import LoginManager
 from flask_debugtoolbar import DebugToolbarExtension
 
@@ -13,8 +13,8 @@ def create_app(MONGO={'db': 'BusyBee'},
     """Create app using config variables"""
     app = Flask(__name__)
 
-    app.config["DEBUG"] = True
-    app.config["TESTING"] = TESTING
+    app.config["DEBUG"] = False
+    #app.config["TESTING"] = TESTING
     app.config['MONGODB_SETTINGS'] = MONGO
     app.config['CSRF_ENABLED'] = CSRF_ENABLED
     app.config['WTF_CSRF_ENABLED'] = WTF_CSRF_ENABLED
@@ -25,8 +25,6 @@ def create_app(MONGO={'db': 'BusyBee'},
 
     # Setup the database.
     db.init_app(app)
-    app.session_interface = MongoEngineSessionInterface(db)
-    toolbar = DebugToolbarExtension(app)
 
     from app.routes.home_route import home
     from app.routes.task_route import tasks
