@@ -7,7 +7,5 @@ install:
   - pip install -r requirements.txt
 
 # run tests
-before_script:
-  - mkdir log
 script:
   - python -m unittest tests
