@@ -1,0 +1,13 @@
+language: python
+python:
+  - "2.7"
+
+# install dependencies
+install: 
+  - pip install -r requirements.txt
+
+# run tests
+before_script:
+  - mkdir log
+script:
+  - python -m unittest tests
