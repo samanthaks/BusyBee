@@ -12,7 +12,7 @@ install:
 
 # run tests
 script:
-  - coverage run --source unittest tests.py
+  - coverage run --source=app/ -m unittest tests
 
 after_success:
   - coveralls
