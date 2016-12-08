@@ -9,13 +9,6 @@ from werkzeug.security import generate_password_hash
 user = Blueprint('users', __name__, template_folder='../templates')
 
 
-@user.route('/users')
-def tasks_page():
-    """The main tasks page"""
-    users = User.objects()
-    return render_template('users.html', users=users)
-
-
 @user.route('/signup', methods=['GET', 'POST'])
 def signup():
     """User sign up"""
@@ -40,8 +33,7 @@ def signup():
                     return redirect(url_for('users.login'))
         else:
             for errors in form.errors.items():
-                for error in errors:
-                    flash(error, category='error')
+                flash("Invalid Email Address", category='error')
             return render_template('signup.html', title='sign up', form=form)
 
 @user.route('/login', methods=['GET', 'POST'])

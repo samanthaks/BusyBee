@@ -101,10 +101,10 @@ def write_review():
                 if session['Username'] == task.author:
                     if form.runner_rating.data >= 0 and form.runner_rating.data <= 5.0 and task.runner_rating is None:
                         Request.objects(id=id).update(runner_rating=form.runner_rating.data)
+                        if form.runner_comment.data is not None:
+                            Request.objects(id=id).update(runner_comment=form.runner_comment.data)
                     else:
                         abort(404)
-                    if form.runner_comment.data is not None and task.runner_comment is None:
-                        Request.objects(id=id).update(runner_comment=form.runner_comment.data)
                     flash("Form Submitted!", category='success')
                     return redirect(url_for('tasks.view', id=id))
                 else:
@@ -114,10 +114,10 @@ def write_review():
                 if session['Username'] == task.runner:
                     if form.author_rating.data >= 0 and form.author_rating.data <= 5.0 and task.author_rating is None:
                         Request.objects(id=id).update(author_rating=form.author_rating.data)
+                        if form.author_comment.data is not None:
+                            Request.objects(id=id).update(author_comment=form.author_comment.data)
                     else:
                         abort(404)
-                    if form.author_comment.data is not None and task.author_comment is None:
-                        Request.objects(id=id).update(author_comment=form.author_comment.data)
                     flash("Form Submitted!", category='success')
                     return redirect(url_for('tasks.view', id=id))
                 else:
