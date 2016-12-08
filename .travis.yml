@@ -15,4 +15,4 @@ script:
   - coverage run --source=app/ -m unittest tests
 
 after_success:
-  - coveralls
+  - coveralls --rcfile=coveralls_config.py
