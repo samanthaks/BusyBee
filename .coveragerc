@@ -1,5 +1,5 @@
 [run]
 branch = True
 
-[html]
-directory = app/templates
+[report]
+omit = app/templates/
