@@ -16,6 +16,9 @@ def signup():
     if request.method == 'GET':
         return render_template('signup.html', title='sign up', form=form)
     if request.method == 'POST':
+        if 'Username' in session:
+            flash("You are already logged in! If you would like to log in as another user, please log out first!", category='error')
+            return render_template('login_loggedin.html', title='login', form=form)
         if form.validate():
             try:
                 if User.objects.get(Username=form.Username.data):
@@ -41,6 +44,9 @@ def login():
     """User login"""
     form = UserForm(request.form)
     if request.method == 'POST':
+        if 'Username' in session:
+            flash("You are already logged in! If you would like to log in as another user, please log out first!", category='error')
+            return render_template('login_loggedin.html', title='login', form=form)
         try:
             user_query = User.objects.get(Username=form.Username.data)
 
