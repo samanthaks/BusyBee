@@ -41,3 +41,6 @@ Run script.
 ## About BusyBee
 * Built in [Flask](http://flask.pocoo.org/)
 * [Flask-Mongoengine](http://docs.mongoengine.org/projects/flask-mongoengine/en/latest/) and [Mongoengine](http://mongoengine.org/) are used to interface with [MongoDB](https://www.mongodb.com/)
+* Testing uses unittest and flask_testing
+* Continuous Integration with Travis
+* Branch Coverage Checking with Coverall
