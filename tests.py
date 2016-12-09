@@ -72,6 +72,14 @@ class Test_Class(TestCase):
         valid_login = self.client.post('/login', data=dict(Username='test1', Password='password'), follow_redirects=True)
         assert 'Logged in successfully!' in valid_login.data
 
+        # login to another user while logged in
+        invalid_login = self.client.post('/login', data=dict(Username='test2', Password='password'), follow_redirects=True)
+        assert 'You are already logged in!' in invalid_login.data
+
+        # sign up another user while logged in
+        invalid_signup = self.client.post('/signup', data=dict(Email='test4@test.com', Username='test4', Password='password'), follow_redirects=True)
+        assert 'You are already logged in!' in invalid_signup.data
+
         # Test log out
         logout = self.client.get('logout', follow_redirects=True)
         assert 'You were logged out!' in logout.data
