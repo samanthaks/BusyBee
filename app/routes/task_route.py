@@ -29,6 +29,9 @@ def new_task():
             form.save()
             flash("Task successfully created!", category='success')
             return redirect(url_for('tasks.tasks_page'))
+        else:
+            for errors in form.errors.items():
+                flash(str(errors[0]) + ": " + str(errors[1][0]), category='error')
         return render_template('new_task.html', form=form)
     flash("You need to be logged in to access this page", category='error')
     return redirect(url_for("users.login"))

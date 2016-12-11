@@ -133,6 +133,10 @@ class Test_Class(TestCase):
         valid_view = self.client.get('/view', follow_redirects=True)
         assert 'Page Not Found' in valid_view.data
 
+        # post invalid task
+        new_task = self.client.post('/new_task', data=dict(title="Package1", weight=1, pick_up="Wein", drop_off="Lerner", author="test1", status=0), follow_redirects=True)
+        assert 'details: This field is required' in new_task.data
+
         # Test posting task
         new_task = self.client.post('/new_task', data=dict(title="Package1", details="toothpaste", weight=1, pick_up="Wein", drop_off="Lerner", author="test1", status=0), follow_redirects=True)
         assert 'Task successfully created!' in new_task.data
